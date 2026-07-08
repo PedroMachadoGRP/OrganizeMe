@@ -5,20 +5,29 @@ import { prisma } from '../lib/prisma'
 import { redis } from '../lib/redis'
 
 export async function createUser(email: string, password: string) {
-    const exist = await prisma.user.findUnique({ where: { email } });
 
-    if (exist) throw new Error('EMAIL_IN_USE');
+
+    const exist = await prisma.user.findUnique({ where: { email } });
+   
+
+    if (exist) throw new Error("EMAIL_IN_USE");
 
     const salt = process.env.BCRYPT_SALT_ROUNDS || 10;
 
 
-    const passwordHash = await bcrypt.hash(password, salt);
+    const passwordHash = await bcrypt.hash(password, Number(salt));
 
-    return prisma.user.create({
+    const user = await prisma.user.create({
         data: { email, passwordHash },
-        select: { id: true, email: true, createAt: true }
+        select: {
+            id: true,
+            email: true,
+            createdAt: true,
+        },
     });
 
+
+    return user;
 }
 
 export async function validateCredentials(email: string, password: string) {
