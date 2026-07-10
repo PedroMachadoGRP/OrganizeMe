@@ -8,7 +8,7 @@ const SAFE_SELECT = {
     expiresAt: true,
     status: true,
     createdAt: true,
-    updateAt: true,
+    updatedAt: true,
 };
 
 export async function listByUser(userId: string, filter?: TaskStatus) {

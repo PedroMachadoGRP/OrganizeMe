@@ -8,7 +8,7 @@ export async function createUser(email: string, password: string) {
 
 
     const exist = await prisma.user.findUnique({ where: { email } });
-   
+
 
     if (exist) throw new Error("EMAIL_IN_USE");
 
@@ -43,14 +43,20 @@ export async function validateCredentials(email: string, password: string) {
 }
 
 export async function generateTokens(userId: string, email: string) {
-    const privateKey = await importPKCS8(process.env.JWT_PRIVATE!.replace(/\\n/g, '\n'), 'RS256');
+    console.log("JWT_PRIVATE:", process.env.JWT_PRIVATE);
+
+    const key = process.env.JWT_PRIVATE_KEY!.replace(/\\n/g, "\n");
+
+    console.log(key);
+
+    const privateKey = await importPKCS8(process.env.JWT_PRIVATE_KEY!.replace(/\\n/g, '\n'), 'RS256');
 
     const accessToken = await new SignJWT({ email })
-    .setProtectedHeader({ alg: 'RS256' })
-    .setSubject(userId)
-    .setIssuedAt()
-    .setExpirationTime('15m')
-    .sign(privateKey)
+        .setProtectedHeader({ alg: 'RS256' })
+        .setSubject(userId)
+        .setIssuedAt()
+        .setExpirationTime('15m')
+        .sign(privateKey)
 
     const refreshToken = crypto.randomBytes(64).toString('hex');
 
@@ -62,9 +68,9 @@ export async function generateTokens(userId: string, email: string) {
         },
     });
 
-    return {accessToken, refreshToken};
+    return { accessToken, refreshToken };
 }
 
-export async function revokeToken(token:string) {
-    await redis.set(`blacklist:${token}`,'1',{ex:15 * 60});
+export async function revokeToken(token: string) {
+    await redis.set(`blacklist:${token}`, '1', { ex: 15 * 60 });
 }

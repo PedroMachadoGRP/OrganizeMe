@@ -50,10 +50,10 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function logout(req: AuthRequest, res: Response) {
-    const token = req.cookies?.['access-token']
+    const token = req.cookies?.['accessToken']
     if (token) await revokeToken(token);
 
-    res.clearCookie('access-token');
+    res.clearCookie('accessToken');
     res.clearCookie('refresh-token');
 
     return res.json({ message: 'Logout realizado' });

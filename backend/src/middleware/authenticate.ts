@@ -11,7 +11,7 @@ export interface AuthRequest<P = ParamsDictionary> extends Request<P> {
 }
 export async function authenticate(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-        const token = req.cookies?.['access-token'] ?? req.headers.authorization?.replace('Bearer', '');
+        const token = req.cookies?.['accessToken'] ?? req.headers.authorization?.replace('Bearer', '');
 
         if (!token) {
             return res.status(401).json({ message: "Usuário não autenticado" });
@@ -23,7 +23,7 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
             return res.status(401).json({ message: 'token revogado' })
         }
 
-        const publicKey = await importSPKI(process.env.JWT_PUBLICK_KEY!.replace(/\n/g, ''), 'RS256');
+        const publicKey = await importSPKI(process.env.JWT_PUBLIC_KEY!.replace(/\n/g, '\n'), 'RS256');
 
         const { payload } = await jwtVerify(token, publicKey);
 
@@ -31,7 +31,9 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
 
         next();
 
-    } catch {
+    } catch(err) {
+        console.error(err);
+        
         return res.status(401).json({ message: 'Token inválido' });
     }
 }
