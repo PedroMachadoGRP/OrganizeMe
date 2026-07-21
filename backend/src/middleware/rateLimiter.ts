@@ -23,13 +23,13 @@ export async function rateLimiter(req: Request, res: Response, next: NextFunctio
 }
 
 export async function loginRateLimiter(req: Request, res: Response, next: NextFunction) {
-    const email = req.body?.email ?? req.ip;
+    // const email = req.body?.email ?? req.ip;
 
-    const {success} = await loginLimiter.limit(email);
+    // const {success} = await loginLimiter.limit(email);
 
-    if(!success) {
-        return res.status(429).json({message: 'Você excedeu o limite de tentativas de login. Tente em 15 minutos'})
-    }
+    // if(!success) {
+    //     return res.status(429).json({message: 'Você excedeu o limite de tentativas de login. Tente em 15 minutos'})
+    // }
 
     next();
 }

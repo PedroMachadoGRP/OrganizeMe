@@ -4,7 +4,7 @@ export interface Task {
   id: string;
   title: string;
   description: string;
-  expiresAt: string; // ISO 8601
+  expiresAt: string; 
   status: TaskStatus;
   createdAt: string;
 }
@@ -15,9 +15,15 @@ export interface User {
   createdAt: string;
 }
 
+export interface UserRegister{
+  name:string;
+  email:string;
+  password:string
+}
+
 export interface AuthResponse {
   user: User;
-  // JWT vem em cookie HttpOnly — não no body
+
 }
 
 export interface ApiError {

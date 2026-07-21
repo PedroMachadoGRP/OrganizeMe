@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import { prisma } from '../lib/prisma'
 import { redis } from '../lib/redis'
 
-export async function createUser(email: string, password: string) {
+export async function createUser(name:string ,email: string, password: string) {
 
 
     const exist = await prisma.user.findUnique({ where: { email } });
@@ -18,9 +18,10 @@ export async function createUser(email: string, password: string) {
     const passwordHash = await bcrypt.hash(password, Number(salt));
 
     const user = await prisma.user.create({
-        data: { email, passwordHash },
+        data: { name,email, passwordHash },
         select: {
             id: true,
+            name:true,
             email: true,
             createdAt: true,
         },
@@ -43,11 +44,7 @@ export async function validateCredentials(email: string, password: string) {
 }
 
 export async function generateTokens(userId: string, email: string) {
-    console.log("JWT_PRIVATE:", process.env.JWT_PRIVATE);
-
     const key = process.env.JWT_PRIVATE_KEY!.replace(/\\n/g, "\n");
-
-    console.log(key);
 
     const privateKey = await importPKCS8(process.env.JWT_PRIVATE_KEY!.replace(/\\n/g, '\n'), 'RS256');
 

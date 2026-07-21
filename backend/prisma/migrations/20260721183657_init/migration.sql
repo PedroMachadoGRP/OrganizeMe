@@ -4,6 +4,7 @@ CREATE TYPE "TaskStatus" AS ENUM ('ACTIVE', 'COMPLETED', 'EXPIRED');
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
     "email" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -16,7 +17,7 @@ CREATE TABLE "User" (
 CREATE TABLE "Task" (
     "id" TEXT NOT NULL,
     "title" VARCHAR(255) NOT NULL,
-    "description" TEXT NOT NULL,
+    "description" TEXT,
     "expiresAt" TIMESTAMP(3) NOT NULL,
     "status" "TaskStatus" NOT NULL DEFAULT 'ACTIVE',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

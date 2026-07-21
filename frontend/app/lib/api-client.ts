@@ -1,6 +1,8 @@
 
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+console.log("API_URL:", API_URL);
+
 
 let csrfToken: string | null = null
 
@@ -32,6 +34,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     },
   });
 
+
   if (res.status === 401 && path !== '/auth/login') {
     try {
       await fetch(`${API_URL}/auth/refresh`, {
@@ -48,7 +51,8 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.message ?? 'Erro inesperado');
+    
+    throw {status: res.status, message:body.message, errors:body.errors,}
   }
 
   if (res.status === 204) return undefined as T;

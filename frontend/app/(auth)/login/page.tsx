@@ -11,11 +11,11 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const {enqueueSnackbar} = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar()
 
 
 
-  const onSubmit = async () => {
+  const loginUser = async () => {
     try {
 
       await login(email, password);
@@ -29,22 +29,19 @@ export default function LoginPage() {
         },
       });
 
-      console.log("ffff");
 
 
     } catch (error: any) {
-      const message =
-        error?.response?.data?.message
 
-      enqueueSnackbar("erro", {
-        variant: "error",
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "right",
-        },
-      });
-
-      console.error(error);
+      if(error.errors?.length){
+        enqueueSnackbar(error.errors[0].message,{
+          variant: "error",
+          anchorOrigin: {
+            horizontal:'right',
+            vertical:'top'
+          }
+        })
+      }
     }
   }
 
@@ -59,7 +56,7 @@ export default function LoginPage() {
           <input type='password' value={password} onChange={(e) => setPassword(e.target.value)} className='h-10 w-80 p-2 rounded-[10] tracking-wide outline-none focus:outline-none border bg-[#17191e] text-zinc-100 border-gray-500' type="password" name="" id="" placeholder='Password' />
         </div>
 
-        <button onClick={onSubmit} className='border border-[#101118] h-10 w-80 rounded-[10] hover:bg-black transition duration-200 hover:cursor-pointer'>Entar</button>
+        <button onClick={loginUser} className='border border-[#101118] h-10 w-80 rounded-[10] hover:bg-black transition duration-200 hover:cursor-pointer'>Entar</button>
 
         <div>
           <h2>Não tem uma conta? <a className='hover:text-blue-300 transition duration-200' href="/register">Clique aqui</a></h2>
