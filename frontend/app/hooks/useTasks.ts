@@ -27,8 +27,8 @@ export function useTasks(filter: Filter = 'ALL') {
             setLoading(true);
             setError(null);
             const params = filter != 'ALL' ? `?filter=${filter}` : '';
-            const data = await api.get<{ task: Task[] }>(`/tasks${params}`)
-            setTasks(data.task);
+            const data = await api.get<{ tasks: Task[] }>(`/tasks${params}`)
+            setTasks(data.tasks);
         } catch {
             setError('Erro ao carreagar tarefas');
         } finally {

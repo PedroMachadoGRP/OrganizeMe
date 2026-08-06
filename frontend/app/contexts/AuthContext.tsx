@@ -1,9 +1,10 @@
 'use client';
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 import { api } from '@/app/lib/api-client';
 import type { User } from '@/app/lib/types';
 
 interface State { user: User | null; loading: boolean }
+
 
 type Action =
     | { type: 'SET_USER'; payload: User }
@@ -45,6 +46,20 @@ const AuthContext = createContext<{
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [state, dispatch] = useReducer(reducer, initialState)
 
+    useEffect(() => {
+        let active = true;
+
+        api.get<{ user: User }>('/auth/me')
+            .then((data) => {
+                if (active) dispatch({ type: 'SET_USER', payload: data.user });
+            })
+            .catch(() => {
+                if (active) dispatch({ type: 'CLEAR_USER' });
+            });
+
+        return () => { active = false };
+    }, []);
+
     async function login(email: string, password: string) {
         const { user } = await api.post<{ user: User }>(
             '/auth/login', { email, password }
@@ -52,20 +67,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         dispatch({ type: 'SET_USER', payload: user });
     }
 
-async function register(name: string, email: string, password: string) {
+    async function register(name: string, email: string, password: string) {
+        const response = await api.post<{ user: User }>(
+            "/auth/register",
+            { name, email, password }
+        );
 
+        dispatch({
+            type: "SET_USER",
+            payload: response.user,
+        });
+    }
 
-    const response = await api.post<{ user: User }>(
-        "/auth/register",
-        { name, email, password }
-    );
-
-
-    dispatch({
-        type: "SET_USER",
-        payload: response.user,
-    });
-}
     async function logout() {
         await api.post('/auth/logout', {});
         dispatch({ type: 'CLEAR_USER' });
@@ -76,7 +89,6 @@ async function register(name: string, email: string, password: string) {
         <AuthContext.Provider value={{ state, login, register, logout }}>
             {children}
         </AuthContext.Provider>
-
     );
 }
 

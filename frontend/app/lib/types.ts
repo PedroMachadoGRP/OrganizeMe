@@ -1,4 +1,4 @@
-export type TaskStatus = 'ACTIVE' | 'COMPLETED' | 'EXPIRED';
+export type TaskStatus = 'ACTIVE' | 'COMPLETED' | 'EXPIRED' | 'CANCELLED';
 
 export interface Task {
   id: string;
@@ -11,8 +11,8 @@ export interface Task {
 
 export interface User {
   id: string;
+  name?:string;
   email: string;
-  createdAt: string;
 }
 
 export interface UserRegister{
