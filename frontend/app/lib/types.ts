@@ -1,4 +1,4 @@
-export type TaskStatus = 'ACTIVE' | 'COMPLETED' | 'EXPIRED' | 'CANCELLED';
+export type TaskStatus = 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'EXPIRED';
 
 export interface Task {
   id: string;

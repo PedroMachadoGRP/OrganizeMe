@@ -3,7 +3,7 @@
 import { api } from '@/app/lib/api-client'
 import { useCallback, useEffect, useState } from 'react';
 
-export type TaskStatus = 'ACTIVE' | 'COMPLETED' | 'EXPIRED';
+export type TaskStatus = 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'EXPIRED';
 
 export interface Task {
     id: string;

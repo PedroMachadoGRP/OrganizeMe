@@ -69,11 +69,11 @@ export default function page() {
     // }
 
     return (
-        <div className='bg-white'>
+        <div>
 
-            <main className='bg-neutral-100 flex justify-center items-center w-screen  h-screen'>
+            <main className='bg-[#F7F9F7] flex justify-center items-center w-screen  h-screen'>
 
-                <section className='h-180 w-280 max-w-7xl mx-auto p-10 flex flex-col  bg-neutral-50'>
+                <section className='h-180 w-280 max-w-7xl mx-auto p-10 flex flex-col  bg-[#FDFDFC]'>
 
                     <div className='flex flex-row justify-between'>
                         <div className='flex flex-col'>
@@ -106,7 +106,7 @@ export default function page() {
 
                     </div>
 
-                    <div className="grid grid-cols-3 gap-y-5 mt-10">
+                    <div className="grid grid-cols-3 gap-5 mt-10">
                         {visibleTasks.map((task) => (
                             <TaskCard
                                 key={task.id}
@@ -114,6 +114,8 @@ export default function page() {
                                 description={task.description}
                                 status={task.status}
                                 expiredDate={new Date(task.expiresAt).toLocaleDateString('pt-BR')}
+                                onComplete={() => complete(task.id)}
+                                onCancel={() => remove(task.id)}
                             />
                         ))}
                     </div>

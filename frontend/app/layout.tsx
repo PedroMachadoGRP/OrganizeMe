@@ -16,7 +16,6 @@ export default function RootLayout({
           <SnackbarProvider maxSnack={1}>
           {children}
           </SnackbarProvider>
-          
         </AuthProvider>
       </body>
     </html>
