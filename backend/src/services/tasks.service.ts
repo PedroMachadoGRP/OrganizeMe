@@ -69,7 +69,7 @@ export async function deleteTask(id: string, userId: string) {
 
 export async function expireOverDueTask() {
     const result = await prisma.task.updateMany({
-        where: { status: 'ACTIVE', expiresAt: { lt: new Date() } },
+        where: { status: 'IN_PROGRESS', expiresAt: { lt: new Date() } },
         data: { status: 'EXPIRED' }
     });
 

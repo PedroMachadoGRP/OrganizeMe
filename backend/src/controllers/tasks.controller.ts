@@ -11,7 +11,7 @@ export async function list(req: AuthRequest<TaskParams>, res: Response) {
 
     const filter = req.query.filter as TaskStatus | undefined;
 
-    const validFilter: TaskStatus[] = ["ACTIVE", "COMPLETED", "EXPIRED"];
+    const validFilter: TaskStatus[] = ["IN_PROGRESS", "COMPLETED", "CANCELLED", "EXPIRED"];
 
     const tasks = await listByUser(req.user!.id,
         filter && validFilter.includes(filter) ? filter : undefined

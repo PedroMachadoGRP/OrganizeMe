@@ -22,7 +22,7 @@ model Task {
   title       String     @db.VarChar(255)
   description String?    @db.Text
   expiresAt   DateTime
-  status      TaskStatus @default(ACTIVE)
+  status      TaskStatus @default(IN_PROGRESS)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   userId      String
@@ -44,7 +44,8 @@ model Session {
 }
 
 enum TaskStatus {
-  ACTIVE
+  IN_PROGRESS
   COMPLETED
+  CANCELLED
   EXPIRED
 }
