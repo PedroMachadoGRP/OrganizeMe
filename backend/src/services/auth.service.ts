@@ -71,3 +71,22 @@ export async function generateTokens(userId: string, email: string) {
 export async function revokeToken(token: string) {
     await redis.set(`blacklist:${token}`, '1', { ex: 15 * 60 });
 }
+
+export async function rotateSession(refreshToken: string) {
+    const tokenHash = crypto.createHash('sha256').update(refreshToken).digest('hex');
+
+    const session = await prisma.session.findUnique({ where: { tokenHash } });
+
+    if (!session || session.expiresAt < new Date()) {
+        if (session) await prisma.session.delete({ where: { id: session.id } }).catch(() => {});
+        throw new Error('INVALID_SESSION');
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: session.userId } });
+
+    if (!user) throw new Error('INVALID_SESSION');
+
+    await prisma.session.delete({ where: { id: session.id } });
+
+    return generateTokens(user.id, user.email);
+}

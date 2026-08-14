@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../middleware/authenticate";
-import { createUser, validateCredentials, generateTokens, revokeToken } from "../services/auth.service";
+import { createUser, validateCredentials, generateTokens, revokeToken, rotateSession } from "../services/auth.service";
 
 export async function register(req: Request, res: Response) {
 
@@ -55,11 +55,44 @@ export async function logout(req: AuthRequest, res: Response) {
     if (token) await revokeToken(token);
 
     res.clearCookie('accessToken');
-    res.clearCookie('refresh-token');
+    res.clearCookie('refresh-token', { path: '/auth/refresh' });
 
     return res.json({ message: 'Logout realizado' });
 }
 
 export async function me(req: AuthRequest, res: Response) {
     return res.json({ user: req.user })
+}
+
+export async function refresh(req: Request, res: Response) {
+    const token = req.cookies?.['refresh-token'];
+
+    if (!token) {
+        return res.status(401).json({ message: 'Sessão não encontrada' });
+    }
+
+    try {
+        const { accessToken, refreshToken } = await rotateSession(token);
+
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 15 * 60 * 1000,
+        });
+
+        res.cookie('refresh-token', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            path: '/auth/refresh',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+
+        return res.json({ message: 'Sessão renovada' });
+    } catch {
+        res.clearCookie('accessToken');
+        res.clearCookie('refresh-token', { path: '/auth/refresh' });
+        return res.status(401).json({ message: 'Sessão expirada' });
+    }
 }
