@@ -11,8 +11,8 @@ type TaskCardProps = {
     description: string
     status: TaskStatus
     expiredDate: string
-    onComplete: (data: { taskId: string }) => Promise<void>
-    onCancel: (data: { taskId: string }) => Promise<void>
+    onComplete: () => void | Promise<void>
+    onCancel: () => void | Promise<void>
 }
 
 export default function TaskCard({
@@ -73,13 +73,17 @@ export default function TaskCard({
 
 
             <section className="mt-auto flex justify-end gap-2 ">
-                <div>
-                    <CompleteDialog />
-                </div>
+                {status === "IN_PROGRESS" && (
+                    <>
+                        <div>
+                            <CompleteDialog onConfirm={onComplete} />
+                        </div>
 
-                <div>
-                    <CancelDialog />
-                </div>
+                        <div>
+                            <CancelDialog onConfirm={onCancel} />
+                        </div>
+                    </>
+                )}
             </section>
 
 

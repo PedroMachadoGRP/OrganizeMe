@@ -15,12 +15,20 @@ export function DialogModal({ onCreate }: DialogModalProps) {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [expireDate, setExpireDate] = useState<string>("");
+    const [dateError, setDateError] = useState<string | null>(null);
     const [open, setOpen] = useState(false)
 
     async function handleSubmit() {
         if (!title || !description || !expireDate) return
 
-        await onCreate({ title, description, expireDate: new Date(expireDate) })
+        const parsedDate = new Date(expireDate)
+        if (parsedDate.getTime() <= Date.now()) {
+            setDateError("A data limite deve ser posterior à data atual")
+            return
+        }
+        setDateError(null)
+
+        await onCreate({ title, description, expireDate: parsedDate })
 
         setTitle("")
         setDescription("")
@@ -81,9 +89,19 @@ export function DialogModal({ onCreate }: DialogModalProps) {
                             <input
                                 type="date"
                                 value={expireDate}
-                                onChange={(e) => setExpireDate(e.target.value)}
+                                min={new Date().toISOString().split('T')[0]}
+                                onChange={(e) => {
+                                    setExpireDate(e.target.value)
+                                    if (dateError) setDateError(null);
+                                }
+
+                                }
                                 className="w-full mt-1 border rounded-md px-3 py-2 text-sm md:text-base outline-none focus:border-blue-500"
                             />
+
+                            {dateError && (
+                                <p className="mt-1 text-xs text-red-500">{dateError}</p>
+                            )}
                         </div>
 
                         <button

@@ -2,9 +2,11 @@ import * as React from "react";
 import { AlertDialog } from "radix-ui";
 import { CheckIcon } from "lucide-react";
 
+type CompleteDialogProps = {
+    onConfirm: () => void | Promise<void>
+}
 
-
-const CompleteDialog = () => (
+const CompleteDialog = ({ onConfirm }: CompleteDialogProps) => (
     <AlertDialog.Root>
         <AlertDialog.Trigger asChild>
             <button className='hover:cursor-pointer bg-[#F7F8F7] p-2 rounded-lg hover:bg-green-300 duration-200 '>
@@ -27,7 +29,9 @@ const CompleteDialog = () => (
                         </button>
                     </AlertDialog.Cancel>
                     <AlertDialog.Action asChild>
-                        <button className="inline-flex h-8.75 items-center justify-center rounded bg-red4 px-3.75 font-medium leading-none text-red11 outline-none outline-offset-1 hover:cursor-pointer hover:bg-green-500 hover:text-neutral-50 duration-300 focus-visible:outline-2 focus-visible:outline-red7 select-none">
+                        <button
+                            onClick={onConfirm}
+                            className="inline-flex h-8.75 items-center justify-center rounded bg-red4 px-3.75 font-medium leading-none text-red11 outline-none outline-offset-1 hover:cursor-pointer hover:bg-green-500 hover:text-neutral-50 duration-300 focus-visible:outline-2 focus-visible:outline-red7 select-none">
                             Completar
                         </button>
                     </AlertDialog.Action>

@@ -48,9 +48,9 @@ export default function Page() {
                 <h2 className='text-4xl text-zinc-50'>Seja bem vindo</h2>
 
                 <div className='flex flex-col p-5 gap-2'>
-                    <input type='text' value={name} onChange={(e) => setName(e.target.value)} className='h-10 w-80 p-2 rounded-[10] tracking-wide outline-none focus:outline-none border bg-[#17191e] text-zinc-100 border-gray-500' type="email" name="" id="" placeholder='Nome' />
-                    <input type='text' value={email} onChange={(e) => setEmail(e.target.value)} className='h-10 w-80 p-2 rounded-[10] tracking-wide outline-none focus:outline-none border bg-[#17191e] text-zinc-100 border-gray-500' type="text" name="" id="" placeholder='Email' />
-                    <input type='password' value={password} onChange={(e) => setPassword(e.target.value)} className='h-10 w-80 p-2 rounded-[10] tracking-wide outline-none focus:outline-none border bg-[#17191e] text-zinc-100 border-gray-500' type="password" name="" id="" placeholder='Password' />
+                    <input type='text' value={name} onChange={(e) => setName(e.target.value)} className='h-10 w-80 p-2 rounded-[10] tracking-wide outline-none focus:outline-none border bg-[#17191e] text-zinc-100 border-gray-500' name="" id="" placeholder='Nome' />
+                    <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} className='h-10 w-80 p-2 rounded-[10] tracking-wide outline-none focus:outline-none border bg-[#17191e] text-zinc-100 border-gray-500'  name="" id="" placeholder='Email' />
+                    <input type='password' value={password} onChange={(e) => setPassword(e.target.value)} className='h-10 w-80 p-2 rounded-[10] tracking-wide outline-none focus:outline-none border bg-[#17191e] text-zinc-100 border-gray-500'  name="" id="" placeholder='Password' />
                 </div>
 
                 <button onClick={registerUser} className='border border-[#101118] h-10 w-80 rounded-[10] hover:bg-black transition duration-200 hover:cursor-pointer'>Entar</button>

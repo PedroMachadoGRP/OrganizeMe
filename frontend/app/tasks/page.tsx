@@ -11,7 +11,7 @@ import { TaskStatus, useTasks } from '../hooks/useTasks'
 import SummaryCardsGroup from '../components/SummaryCardsGroup'
 import { useRouter } from 'next/navigation';
 
-type FilterOption = TaskStatus | "ALL"
+export type FilterOption = TaskStatus | "ALL"
 
 
 export default function page() {
@@ -29,9 +29,26 @@ export default function page() {
     }, [authLoading, user, router])
 
     const visibleTasks = useMemo(() => {
-        if (!search.trim()) return tasks
-        const term = search.toLowerCase()
-        return tasks.filter((t) => t.title.toLowerCase().includes(term))
+        const inProgressTasks = tasks.filter(
+            (task) => task.status === "IN_PROGRESS"
+        )
+
+        const term = search.trim().toLowerCase()
+
+        const filtered = term
+            ? inProgressTasks.filter(
+                (task) =>
+                    task.title.toLowerCase().includes(term) ||
+                    task.description.toLowerCase().includes(term)
+            )
+            : inProgressTasks
+
+        return [...filtered]
+            .sort(
+                (a, b) =>
+                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            )
+            .slice(0, 6)
     }, [tasks, search])
 
     async function handleCreateTask(data: { title: string, description: string, expireDate: Date | null }) {
@@ -60,13 +77,13 @@ export default function page() {
         }
     }
 
-    // if (authLoading || !user) {
-    //     return (
-    //         <div className='bg-neutral-100 flex justify-center items-center w-screen h-screen'>
-    //             <p className='text-neutral-600'>Carregando...</p>
-    //         </div>
-    //     )
-    // }
+    if (authLoading || !user) {
+        return (
+            <div className='bg-neutral-100 flex justify-center items-center w-screen h-screen'>
+                <p className='text-neutral-600'>Carregando...</p>
+            </div>
+        )
+    }
 
     return (
         <div>
@@ -87,7 +104,7 @@ export default function page() {
                         </div>
 
 
-                        < SummaryCardsGroup />
+                        < SummaryCardsGroup tasks={tasks} />
                     </div>
 
 
@@ -98,6 +115,8 @@ export default function page() {
                             className='px-3 w-100 h-10 border bg-white text-neutral-800 border-black rounded-md outline-none'
                             type="text"
                             placeholder='Digite sua tarefa'
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                         />
 
                         <div className='w-40 h-10 border-black rounded-md hover:cursor-pointer'>
