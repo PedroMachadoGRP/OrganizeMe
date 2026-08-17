@@ -3,6 +3,7 @@
 import { AuthProvider } from '@/app/contexts/AuthContext';
 import { SnackbarProvider } from 'notistack';
 import './globals.css';
+import { ThemeProvider } from './contexts/themeProvider';
 
 
 
@@ -14,7 +15,9 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <SnackbarProvider maxSnack={1}>
-          {children}
+            <ThemeProvider>
+              {children}
+            </ThemeProvider>
           </SnackbarProvider>
         </AuthProvider>
       </body>

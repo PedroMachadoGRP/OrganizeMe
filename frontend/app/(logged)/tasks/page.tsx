@@ -1,14 +1,14 @@
 'use client'
 
 import React, { useEffect, useMemo, useState } from 'react'
-import TaskCard from '../components/TaskCard'
-import CreateTaskModal from "../components/CreateTaskModal"
-import { DialogModal } from '../components/ui/dialogModal'
-import { User } from '../lib/types'
+import TaskCard from '../../components/TaskCard'
+import CreateTaskModal from "../../components/CreateTaskModal"
+import { DialogModal } from '../../components/ui/dialogModal'
+import { User } from '../../lib/types'
 import { useSnackbar } from 'notistack'
-import { useAuth } from '../contexts/AuthContext'
-import { TaskStatus, useTasks } from '../hooks/useTasks'
-import SummaryCardsGroup from '../components/SummaryCardsGroup'
+import { useAuth } from '../../contexts/AuthContext'
+import { TaskStatus, useTasks } from '../../hooks/useTasks'
+import SummaryCardsGroup from '../../components/SummaryCardsGroup'
 import { useRouter } from 'next/navigation';
 
 export type FilterOption = TaskStatus | "ALL"
@@ -88,9 +88,8 @@ export default function page() {
     return (
         <div>
 
-            <main className='bg-[#F7F9F7] flex justify-center items-center w-screen  h-screen'>
-
-                <section className='h-180 w-280 max-w-7xl mx-auto p-10 flex flex-col  bg-[#FDFDFC]'>
+            <main className='bg-[#F7F9F7] flex justify-center items-start w-full min-h-screen p-10'>
+                <section className='w-full max-w-7xl flex flex-col bg-[#FDFDFC] p-10 rounded-2xl'>''
 
                     <div className='flex flex-row justify-between'>
                         <div className='flex flex-col'>

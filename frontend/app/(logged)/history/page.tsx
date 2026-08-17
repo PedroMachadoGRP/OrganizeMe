@@ -1,10 +1,10 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { FilterOption } from '../tasks/page';
-import { useTasks } from '../hooks/useTasks';
-import TaskCard from '../components/TaskCard';
+import { useTasks } from '../../hooks/useTasks';
+import TaskCard from '../../components/TaskCard';
 
 
 
