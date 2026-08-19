@@ -79,7 +79,7 @@ export default function page() {
 
     if (authLoading || !user) {
         return (
-            <div className='bg-neutral-100 flex justify-center items-center w-screen h-screen'>
+            <div className='bg-neutral-100 flex justify-center items-center w-screen h-screen p-5'>
                 <p className='text-neutral-600'>Carregando...</p>
             </div>
         )
@@ -88,8 +88,8 @@ export default function page() {
     return (
         <div>
 
-            <main className='bg-[#F7F9F7] flex justify-center items-start w-full min-h-screen p-10'>
-                <section className='w-full max-w-7xl flex flex-col bg-[#FDFDFC] p-10 rounded-2xl'>''
+            <main className='bg-[#F7F9F7] dark:bg-black flex justify-center items-start w-full min-h-screen p-2'>
+                <section className='w-full max-w-7xl flex flex-col bg-[#FDFDFC] p-10 rounded-2xl'>
 
                     <div className='flex flex-row justify-between'>
                         <div className='flex flex-col'>

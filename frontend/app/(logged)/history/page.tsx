@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { FilterOption } from '../tasks/page';
 import { useTasks } from '../../hooks/useTasks';
 import TaskCard from '../../components/TaskCard';
+import HistoryTaskCard from '@/app/components/HistoryTaskCard';
 
 
 
@@ -23,28 +24,33 @@ export default function page() {
   const visibleTasks = useMemo(() => {
     const term = search.trim().toLowerCase()
 
-    if (!term) {
-      return tasks
-    }
+    const filtered = term
+      ? tasks.filter((task) =>
+        task.title.toLowerCase().includes(term) ||
+        task.description.toLowerCase().includes(term)
+      )
+      : tasks
 
-    return tasks.filter((task) =>
-      task.title.toLowerCase().includes(term) ||
-      task.description.toLowerCase().includes(term)
-    )
+    return [...filtered]
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      .slice(0, 10)
   }, [tasks, search])
   return (
+
     <div>
-      {visibleTasks.map((task) => (
-        <TaskCard
-          key={task.id}
-          title={task.title}
-          description={task.description}
-          status={task.status}
-          expiredDate={new Date(task.expiresAt).toLocaleDateString('pt-BR')}
-          onComplete={() => complete(task.id)}
-          onCancel={() => remove(task.id)}
-        />
-      ))}
+      <section className='bg-[#F7F9F7] flex justify-center items-start w-full min-h-screen p-10'>
+        <div className='bg-white'>
+          <HistoryTaskCard tasks={visibleTasks} />
+        </div>
+      </section>
+
+      <div>
+      </div>
     </div>
+
+
   )
 }

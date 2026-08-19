@@ -20,16 +20,16 @@ export const NavItems = () => {
     {
       name: 'History',
       href: '/history',
-      icon: <User size={20} />,
+      icon: <BookMarked size={20} />,
       active: isNavItemActive(pathname, '/history'),
       position: 'top',
     },
 
     {
-      name: 'Activties',
-      href: '/activities',
-      icon: <BookMarked size={20} />,
-      active: isNavItemActive(pathname, '/activities'),
+      name: 'Profile',
+      href: '/profile',
+      icon: <User size={20} />,
+      active: isNavItemActive(pathname, '/profile'),
       position: 'top',
     },
 
