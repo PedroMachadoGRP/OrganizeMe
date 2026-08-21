@@ -39,7 +39,7 @@ export function DialogModal({ onCreate }: DialogModalProps) {
     return (
         <Dialog.Root open={open} onOpenChange={setOpen}>
             <Dialog.Trigger asChild>
-                <button className="h-10 rounded-md border border-green-400 dark:border-blue-700 px-4 text-sm md:text-base text-neutral-700 dark:text-black dark:hover:text-neutral-200 hover:bg-green-300 hover:cursor-pointer dark:hover:bg-blue-700 transition">
+                <button className="h-10 rounded-md border border-green-400 dark:border-blue-700 px-4 text-sm md:text-base text-neutral-700 dark:text-neutral-300 dark:hover:text-neutral-900 hover:bg-green-300 hover:cursor-pointer dark:hover:bg-blue-700 transition">
                     Nova atividade
                 </button>
             </Dialog.Trigger>

@@ -14,10 +14,10 @@ const STATUS_LABELS: Record<TaskStatus, string> = {
 }
 
 const STATUS_STYLES: Record<TaskStatus, string> = {
-    IN_PROGRESS: 'bg-blue-100 text-blue-700',
-    COMPLETED: 'bg-green-100 text-green-700',
-    CANCELLED: 'bg-neutral-200 text-neutral-600',
-    EXPIRED: 'bg-red-100 text-red-700',
+        EXPIRED: "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100",
+        IN_PROGRESS: "bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100",
+        COMPLETED: "bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100",
+        CANCELLED: "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100",
 }
 
 const ROW_GRID =
@@ -25,8 +25,8 @@ const ROW_GRID =
 
 export default function HistoryTaskCard({ tasks }: HistoryTaskCardProps) {
     return (
-        <div className="flex flex-col p-5 w-full divide-y divide-gray-50 text-black ">
-            <header className={`${ROW_GRID} font-semibold  `}>
+        <div className="flex flex-col p-5 w-full divide-y divide-gray-50 dark:divide-neutral-800 text-black dark:bg-neutral-900  ">
+            <header className={`${ROW_GRID} font-semibold dark:text-neutral-100 dark:bg-neutral-900 `}>
                 <section className="min-w-0">Nome da tarefa</section>
                 <section className="min-w-0">Descrição da tarefa</section>
                 <section className="min-w-0">Prazo</section>
@@ -40,7 +40,7 @@ export default function HistoryTaskCard({ tasks }: HistoryTaskCardProps) {
                 </p>
             ) : (
                 tasks.map((task) => (
-                    <main key={task.id} className={`${ROW_GRID} bg-[#f8f7f7]`} >
+                    <main key={task.id} className={`${ROW_GRID} bg-[#f8f7f7] dark:bg-neutral-900 dark:text-neutral-100`} >
                         <section className="min-w-0 truncate" title={task.title}>
                             {task.title}
                         </section>

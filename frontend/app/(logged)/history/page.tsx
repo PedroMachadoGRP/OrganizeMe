@@ -41,7 +41,7 @@ export default function page() {
   return (
 
     <div>
-      <section className='bg-[#F7F9F7] flex justify-center items-start w-full min-h-screen p-10'>
+      <section className='bg-[#F7F9F7] dark:bg-black flex justify-center items-start w-full min-h-screen p-10'>
         <div className='bg-white'>
           <HistoryTaskCard tasks={visibleTasks} />
         </div>

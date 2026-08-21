@@ -79,8 +79,18 @@ export default function page() {
 
     if (authLoading || !user) {
         return (
-            <div className='bg-neutral-100 flex justify-center items-center w-screen h-screen p-5'>
-                <p className='text-neutral-600'>Carregando...</p>
+            <div className="
+                bg-neutral-100 dark:bg-neutral-950
+                flex justify-center items-center
+                w-screen h-screen
+                p-5
+            ">
+                <p className="
+                    text-neutral-600
+                    dark:text-neutral-400
+                ">
+                    Carregando...
+                </p>
             </div>
         )
     }
@@ -88,59 +98,140 @@ export default function page() {
     return (
         <div>
 
-            <main className='bg-[#F7F9F7] dark:bg-black flex justify-center items-start w-full min-h-screen p-2'>
-                <section className='w-full max-w-7xl flex flex-col bg-[#FDFDFC] p-10 rounded-2xl'>
+            <main className="
+                bg-[#F7F9F7] dark:bg-black
+                flex justify-center items-start
+                w-full min-h-screen
+                p-2
+            ">
 
-                    <div className='flex flex-row justify-between'>
-                        <div className='flex flex-col'>
-                            <h2 className='text-neutral-950 text-2xl font-semibold'>
+                <section className="
+                    w-full max-w-7xl
+                    flex flex-col
+                    bg-[#FDFDFC] dark:bg-neutral-900
+                    p-10
+                    rounded-2xl
+                ">
+
+                    <div className="
+                        flex flex-row
+                        justify-between
+                    ">
+
+                        <div className="
+                            flex flex-col
+                        ">
+
+                            <h2 className="
+                                text-neutral-950 dark:text-neutral-50
+                                text-2xl
+                                font-semibold
+                            ">
                                 Suas tarefas
                             </h2>
 
-                            <h3 className='text-neutral-800 text-sm'>
+                            <h3 className="
+                                text-neutral-800 dark:text-neutral-300
+                                text-sm
+                            ">
                                 Organiza suas tarefas com o Organiza-me
                             </h3>
+
                         </div>
 
 
-                        < SummaryCardsGroup tasks={tasks} />
+                        <SummaryCardsGroup tasks={tasks} />
+
                     </div>
 
 
-
-                    <div className='flex mt-10 gap-5 justify-start items-start'>
+                    <div className="
+                        flex
+                        mt-10
+                        gap-5
+                        justify-start
+                        items-start
+                    ">
 
                         <input
-                            className='px-3 w-100 h-10 border bg-white text-neutral-800 border-black rounded-md outline-none'
+                            className="
+                                px-3
+                                w-100
+                                h-10
+                                border
+                                bg-white dark:bg-neutral-800
+                                text-neutral-800 dark:text-neutral-200
+                                border-black dark:border-neutral-600
+                                rounded-md
+                                outline-none
+
+                                placeholder:text-neutral-500
+                                dark:placeholder:text-neutral-400
+                            "
                             type="text"
-                            placeholder='Digite sua tarefa'
+                            placeholder="Digite sua tarefa"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
 
-                        <div className='w-40 h-10 border-black rounded-md hover:cursor-pointer'>
+                        <div className="
+                            w-40
+                            h-10
+                            border-black dark:border-neutral-600
+                            rounded-md
+                            hover:cursor-pointer
+                        ">
                             <DialogModal onCreate={handleCreateTask} />
                         </div>
 
                     </div>
 
-                    <div className="grid grid-cols-3 gap-5 mt-10">
-                        {visibleTasks.map((task) => (
-                            <TaskCard
-                                key={task.id}
-                                title={task.title}
-                                description={task.description}
-                                status={task.status}
-                                expiredDate={new Date(task.expiresAt).toLocaleDateString('pt-BR')}
-                                onComplete={() => complete(task.id)}
-                                onCancel={() => remove(task.id)}
-                            />
-                        ))}
-                    </div>
+
+                    <div className="
+    grid
+    grid-cols-3
+    gap-5
+    mt-10
+">
+
+    {visibleTasks.length > 0 ? (
+        visibleTasks.map((task) => (
+            <TaskCard
+                key={task.id}
+                title={task.title}
+                description={task.description}
+                status={task.status}
+                expiredDate={new Date(task.expiresAt).toLocaleDateString('pt-BR')}
+                onComplete={() => complete(task.id)}
+                onCancel={() => remove(task.id)}
+            />
+        ))
+    ) : (
+        <div className="
+            col-span-3
+            flex
+            justify-center
+            items-center
+            min-h-40
+            rounded-xl
+            border
+            border-zinc-300
+            dark:border-zinc-700
+            bg-zinc-50
+            dark:bg-zinc-800
+            text-zinc-500
+            dark:text-zinc-400
+        ">
+            Nenhuma tarefa registrada no momento
+        </div>
+    )}
+
+</div>
 
                 </section>
 
             </main>
+
         </div>
     )
 }
