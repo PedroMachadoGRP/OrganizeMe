@@ -35,6 +35,7 @@ export async function login(req: Request, res: Response) {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
+        path: '/',
         maxAge: 15 * 60 * 1000
     });
 
@@ -54,8 +55,9 @@ export async function logout(req: AuthRequest, res: Response) {
     const token = req.cookies?.['accessToken']
     if (token) await revokeToken(token);
 
-    res.clearCookie('accessToken');
+    res.clearCookie('accessToken', { path: '/' });
     res.clearCookie('refresh-token', { path: '/auth/refresh' });
+    res.clearCookie('csrf-token', { path: '/' });
 
     return res.json({ message: 'Logout realizado' });
 }
@@ -78,6 +80,7 @@ export async function refresh(req: Request, res: Response) {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
+            path: '/',
             maxAge: 15 * 60 * 1000,
         });
 
@@ -91,8 +94,9 @@ export async function refresh(req: Request, res: Response) {
 
         return res.json({ message: 'Sessão renovada' });
     } catch {
-        res.clearCookie('accessToken');
+        res.clearCookie('accessToken', { path: '/' });
         res.clearCookie('refresh-token', { path: '/auth/refresh' });
+        res.clearCookie('csrf-token', { path: '/' });
         return res.status(401).json({ message: 'Sessão expirada' });
     }
 }

@@ -1,29 +1,42 @@
 import React from 'react'
 import { Task, TaskStatus } from '../hooks/useTasks'
-import { EllipsisVertical } from 'lucide-react'
+import { ChevronLeft, ChevronRight, EllipsisVertical } from 'lucide-react'
 
 type HistoryTaskCardProps = {
     tasks: Task[]
+    page: number
+    totalPages: number
+    onPreviousPage: () => void
+    onNextPage: () => void
 }
 
 const STATUS_LABELS: Record<TaskStatus, string> = {
-    IN_PROGRESS: 'Em progresso',
+    IN_PROGRESS: 'Em Andamento',
     COMPLETED: 'Concluída',
     CANCELLED: 'Cancelada',
     EXPIRED: 'Expirada',
 }
 
 const STATUS_STYLES: Record<TaskStatus, string> = {
-        EXPIRED: "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100",
-        IN_PROGRESS: "bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100",
-        COMPLETED: "bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100",
-        CANCELLED: "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100",
+    EXPIRED: "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100",
+    IN_PROGRESS: "bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100",
+    COMPLETED: "bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100",
+    CANCELLED: "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100",
 }
 
 const ROW_GRID =
     'grid grid-cols-[1fr_2fr_1fr_1fr_1fr] items-center gap-30 px-4 py-3'
 
-export default function HistoryTaskCard({ tasks }: HistoryTaskCardProps) {
+export default function HistoryTaskCard({
+    tasks,
+    page,
+    totalPages,
+    onPreviousPage,
+    onNextPage,
+}: HistoryTaskCardProps) {
+    const isFirstPage = page <= 1
+    const isLastPage = page >= totalPages
+
     return (
         <div className="flex flex-col p-5 w-full divide-y divide-gray-50 dark:divide-neutral-800 text-black dark:bg-neutral-900  ">
             <header className={`${ROW_GRID} font-semibold dark:text-neutral-100 dark:bg-neutral-900 `}>
@@ -66,6 +79,24 @@ export default function HistoryTaskCard({ tasks }: HistoryTaskCardProps) {
                     </main>
                 ))
             )}
+
+            <section className='flex flex-row items-center self-center gap-5 p-0.5 dark:text-neutral-100'>
+                <button
+                    onClick={onPreviousPage}
+                    disabled={isFirstPage}
+                    className='hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-30'
+                >
+                    <ChevronLeft />
+                </button>
+                <h2>Página {page}</h2>
+                <button
+                    onClick={onNextPage}
+                    disabled={isLastPage}
+                    className='hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-30'
+                >
+                    <ChevronRight />
+                </button>
+            </section>
         </div>
     )
 }
