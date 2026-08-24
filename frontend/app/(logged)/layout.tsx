@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 
 export default async function TasksLayout({ children, }: { children: React.ReactNode }) {
     const cookieStore = await cookies();
-    const token = cookieStore.get('access-token');
+    const token = cookieStore.get('accessToken');
 
     // if (!token) {
     //     redirect('/login');

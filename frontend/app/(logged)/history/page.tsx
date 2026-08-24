@@ -14,7 +14,7 @@ export default function page() {
   const [page, setPage] = useState(1);
   const { state: { user, loading: authLoading } } = useAuth();
   const router = useRouter()
-  const { tasks, loading, error, create, complete, remove, refresh } = useTasks(filter)
+  const { tasks, loading, error, create, complete, remove, refresh,update } = useTasks(filter)
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -60,6 +60,7 @@ export default function page() {
             totalPages={totalPages}
             onPreviousPage={() => setPage((current) => Math.max(1, current - 1))}
             onNextPage={() => setPage((current) => Math.min(totalPages, current + 1))}
+            onUpdate={update}
           />
         </div>
       </section>
