@@ -47,7 +47,7 @@ export default function HistoryTaskCard({
   const isLastPage = page >= totalPages;
 
   return (
-    <div className="flex flex-col p-5 w-full divide-y divide-gray-50 dark:divide-neutral-800 text-black dark:bg-neutral-900  ">
+    <div className="flex flex-col p-5 w-full divide-y divide-neutral-100 dark:divide-neutral-800 text-black dark:bg-neutral-900  ">
       <header
         className={`${ROW_GRID} font-semibold dark:text-neutral-100 dark:bg-neutral-900 `}
       >
@@ -66,7 +66,7 @@ export default function HistoryTaskCard({
         tasks.map((task) => (
           <main
             key={task.id}
-            className={`${ROW_GRID} bg-[#f8f7f7] dark:bg-neutral-900 dark:text-neutral-100`}
+            className={`${ROW_GRID} bg-[#fffcfc] dark:bg-neutral-900  dark:text-neutral-100`}
           >
             <section className="min-w-0 truncate" title={task.title}>
               {task.title}

@@ -109,7 +109,7 @@ export default function page() {
                     w-full max-w-7xl
                     flex flex-col
                     bg-[#FDFDFC] dark:bg-neutral-900
-                    p-10
+                    p-5
                     rounded-2xl
                 ">
 
