@@ -124,7 +124,7 @@ export default function UpdateTaskDialog({ task, onUpdate }: UpdateTaskDialogPro
             <button
               onClick={handleSubmit}
               disabled={submitting}
-              className="inline-flex h-8.75 items-center justify-center rounded bg-green4 px-3.75 font-medium leading-none text-green11 outline-none outline-offset-1 hover:bg-green5 focus-visible:outline-2 focus-visible:outline-green6 select-none disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex duration-150 hover:bg-cyan-950 hover:cursor-pointer h-8.75 items-center justify-center rounded bg-green4 px-3.75 font-medium leading-none text-green11 outline-none outline-offset-1 hover:bg-green5 focus-visible:outline-2 focus-visible:outline-green6 select-none disabled:cursor-not-allowed disabled:opacity-50"
             >
               {submitting ? "Salvando..." : "Salvar alterações"}
             </button>
@@ -134,7 +134,7 @@ export default function UpdateTaskDialog({ task, onUpdate }: UpdateTaskDialogPro
               className="absolute right-2.5 top-2.5 inline-flex size-6.25 appearance-none items-center justify-center rounded-full text-violet11 bg-gray3 hover:bg-violet4 focus:shadow-[0_0_0_2px] focus:shadow-violet7 focus:outline-none"
               aria-label="Close"
             >
-              <Cross2Icon />
+              <Cross2Icon  className="hover:cursor-pointer hover:bg-neutral-800 rounded-4xl"/>
             </button>
           </Dialog.Close>
         </Dialog.Content>
