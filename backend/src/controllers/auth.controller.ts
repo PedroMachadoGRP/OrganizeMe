@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../middleware/authenticate";
 import { createUser, validateCredentials, generateTokens, revokeToken, rotateSession } from "../services/auth.service";
+import { prisma } from "@/lib/prisma";
 
 export async function register(req: Request, res: Response) {
 
@@ -47,7 +48,7 @@ export async function login(req: Request, res: Response) {
         maxAge: 7 * 24 * 60 * 60 * 1000,
     })
 
-    return res.json({ user: { id: user.id, email: user.email, } })
+    return res.json({ user: { id: user.id, email: user.email,name:user.name } })
 
 }
 
@@ -63,7 +64,8 @@ export async function logout(req: AuthRequest, res: Response) {
 }
 
 export async function me(req: AuthRequest, res: Response) {
-    return res.json({ user: req.user })
+    const user = await prisma.user.findUnique({where:{id:req.user!.id}})
+    return res.json({ user })
 }
 
 export async function refresh(req: Request, res: Response) {
