@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../middleware/authenticate";
-import { createUser, validateCredentials, generateTokens, revokeToken, rotateSession } from "../services/auth.service";
+import { createUser, validateCredentials, generateTokens, revokeToken, rotateSession, updateUser, updateUserPassword } from "../services/auth.service";
 import { prisma } from "@/lib/prisma";
 
 export async function register(req: Request, res: Response) {
 
     try {
 
-        const { name,email, password } = req.body;
-        const user = await createUser(name,email, password);
+        const { name, email, password } = req.body;
+        const user = await createUser(name, email, password);
         return res.status(201).json({ user })
 
     } catch (err: any) {
@@ -48,7 +48,7 @@ export async function login(req: Request, res: Response) {
         maxAge: 7 * 24 * 60 * 60 * 1000,
     })
 
-    return res.json({ user: { id: user.id, email: user.email,name:user.name } })
+    return res.json({ user: { id: user.id, email: user.email, name: user.name } })
 
 }
 
@@ -64,8 +64,33 @@ export async function logout(req: AuthRequest, res: Response) {
 }
 
 export async function me(req: AuthRequest, res: Response) {
-    const user = await prisma.user.findUnique({where:{id:req.user!.id}})
+    const user = await prisma.user.findUnique({ where: { id: req.user!.id } })
     return res.json({ user })
+}
+
+export async function updateMe(req: AuthRequest, res: Response) {
+    try {
+        const user = await updateUser(req.user!.id, req.body);
+        return res.json({ user })
+    } catch (err: any) {
+        if (err.message === "EMAIL_IN_USE") {
+            return res.status(409).json({ message: "Este email já está em uso" })
+        }
+        throw err
+    }
+}
+
+export async function updatePassword(req:AuthRequest,res:Response) {
+    try {
+        await updateUserPassword(req.user!.id, req.body.currentPassword, req.body.newPassword);
+        return res.json({message:"Senha atualizda com sucesso"})
+    } catch (err:any) {
+        if(err.message === "INVALID_CURRENT_PASSWORD"){
+            return res.status(401).json({message:"Senha atual incorreta"})
+        }
+
+        throw err
+    }
 }
 
 export async function refresh(req: Request, res: Response) {

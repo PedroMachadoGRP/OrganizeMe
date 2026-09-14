@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import { prisma } from '../lib/prisma'
 import { redis } from '../lib/redis'
 
-export async function createUser(name:string ,email: string, password: string) {
+export async function createUser(name: string, email: string, password: string) {
 
 
     const exist = await prisma.user.findUnique({ where: { email } });
@@ -18,10 +18,10 @@ export async function createUser(name:string ,email: string, password: string) {
     const passwordHash = await bcrypt.hash(password, Number(salt));
 
     const user = await prisma.user.create({
-        data: { name,email, passwordHash },
+        data: { name, email, passwordHash },
         select: {
             id: true,
-            name:true,
+            name: true,
             email: true,
             createdAt: true,
         },
@@ -29,6 +29,45 @@ export async function createUser(name:string ,email: string, password: string) {
 
 
     return user;
+}
+
+export async function updateUser(userId: string, data: { name?: string, email?: string }) {
+
+    if (data.email) {
+        const exist = await prisma.user.findUnique({ where: { email: data.email } });
+        if (exist && exist.id !== userId) throw new Error("EMAIL_IN_USE");
+    }
+
+    return prisma.user.update({
+        where: { id: userId },
+        data: {
+            ...(data.name !== undefined ? { name: data.name } : {}),
+            ...(data.email !== undefined ? { email: data.email } : {})
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+        },
+    })
+}
+
+export async function updateUserPassword(userId:string,currentPassword:string,newPassword:string) {
+    const user = await prisma.user.findUnique({where:{id:userId}})
+
+    if(!user){throw new Error("USER_NOT_FOUND")}
+
+    const valid = await bcrypt.compare(currentPassword,user.passwordHash);
+
+    if(!valid) throw new Error("INVALID_CURRENT_PASSWORD");
+
+    const salt = process.env.BCRYPT_SALT_ROUNDS || 10;
+    const passwordHash = await bcrypt.hash(newPassword,Number(salt))
+
+    await prisma.user.update({
+        where: {id:userId},
+        data: {passwordHash},
+    })
 }
 
 export async function validateCredentials(email: string, password: string) {
@@ -78,7 +117,7 @@ export async function rotateSession(refreshToken: string) {
     const session = await prisma.session.findUnique({ where: { tokenHash } });
 
     if (!session || session.expiresAt < new Date()) {
-        if (session) await prisma.session.delete({ where: { id: session.id } }).catch(() => {});
+        if (session) await prisma.session.delete({ where: { id: session.id } }).catch(() => { });
         throw new Error('INVALID_SESSION');
     }
 
