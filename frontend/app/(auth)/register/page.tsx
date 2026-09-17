@@ -17,7 +17,6 @@ export default function Page() {
         try { 
             await register(name, email, password)
             router.push('/tasks')
-             console.log("funcionou");
 
             enqueueSnackbar("Usuario registrado com sucesso", {
                 variant: "success",

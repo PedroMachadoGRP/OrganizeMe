@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import { api } from '@/app/lib/api-client';
-import type { User } from '@/app/lib/types';
+import type { User, UpdateUserInput, UpdateUserPasswordInput } from '@/app/lib/types';
 
 interface State { user: User | null; loading: boolean }
 
@@ -41,6 +41,8 @@ const AuthContext = createContext<{
     login: (email: string, password: string) => Promise<void>;
     register: (name: string, email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    updateUser: (data: UpdateUserInput) => Promise<void>;
+    updateUserPassword: (data: UpdateUserPasswordInput) => Promise<void>;
 } | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -85,8 +87,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         window.location.href = '/login';
     }
 
+    async function updateUser(data: UpdateUserInput) {
+        const { user } = await api.put<{ user: User }>('/auth/me', data);
+        dispatch({ type: 'SET_USER', payload: user });
+    }
+
+    async function updateUserPassword(data: UpdateUserPasswordInput) {
+        await api.put('/auth/me/password', data);
+    }
+
     return (
-        <AuthContext.Provider value={{ state, login, register, logout }}>
+        <AuthContext.Provider value={{ state, login, register, logout, updateUser, updateUserPassword }}>
             {children}
         </AuthContext.Provider>
     );
