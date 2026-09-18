@@ -64,7 +64,10 @@ export async function logout(req: AuthRequest, res: Response) {
 }
 
 export async function me(req: AuthRequest, res: Response) {
-    const user = await prisma.user.findUnique({ where: { id: req.user!.id } })
+    const user = await prisma.user.findUnique({
+        where: { id: req.user!.id },
+        select: { id: true, name: true, email: true, createdAt: true }
+    })
     return res.json({ user })
 }
 
@@ -80,13 +83,13 @@ export async function updateMe(req: AuthRequest, res: Response) {
     }
 }
 
-export async function updatePassword(req:AuthRequest,res:Response) {
+export async function updatePassword(req: AuthRequest, res: Response) {
     try {
         await updateUserPassword(req.user!.id, req.body.currentPassword, req.body.newPassword);
-        return res.json({message:"Senha atualizda com sucesso"})
-    } catch (err:any) {
-        if(err.message === "INVALID_CURRENT_PASSWORD"){
-            return res.status(401).json({message:"Senha atual incorreta"})
+        return res.json({ message: "Senha atualizda com sucesso" })
+    } catch (err: any) {
+        if (err.message === "INVALID_CURRENT_PASSWORD") {
+            return res.status(401).json({ message: "Senha atual incorreta" })
         }
 
         throw err
