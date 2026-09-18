@@ -9,6 +9,25 @@ export async function register(req: Request, res: Response) {
 
         const { name, email, password } = req.body;
         const user = await createUser(name, email, password);
+
+        const { accessToken, refreshToken } = await generateTokens(user.id, user.email)
+
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            path: '/',
+            maxAge: 15 * 60 * 1000
+        });
+
+        res.cookie('refresh-token', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            path: '/auth/refresh',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        })
+
         return res.status(201).json({ user })
 
     } catch (err: any) {
