@@ -203,7 +203,7 @@ export default function page() {
                 status={task.status}
                 expiredDate={new Date(task.expiresAt).toLocaleDateString('pt-BR')}
                 onComplete={() => complete(task.id)}
-                onCancel={() => remove(task.id)}
+                onRemove={() => remove(task.id)}
             />
         ))
     ) : (

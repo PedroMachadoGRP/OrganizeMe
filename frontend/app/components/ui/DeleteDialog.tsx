@@ -3,11 +3,11 @@ import { AlertDialog } from "radix-ui";
 import { CheckIcon } from "lucide-react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-type CancelDialogProps = {
+type DeleteDialogProps = {
     onConfirm: () => void | Promise<void>
 }
 
-const CancelDialog = ({ onConfirm }: CancelDialogProps) => (
+const DeleteDialog = ({ onConfirm }: DeleteDialogProps) => (
     <AlertDialog.Root>
         <AlertDialog.Trigger asChild>
             <button className='hover:cursor-pointer bg-[#F7F8F7] dark:bg-[#262626] p-2 rounded-lg hover:bg-red-300 hover:dark:bg-red-700 duration-200'>
@@ -18,10 +18,10 @@ const CancelDialog = ({ onConfirm }: CancelDialogProps) => (
    <AlertDialog.Overlay className=" fixed inset-0 bg-black/40 backdrop-blur-sm" />
             <AlertDialog.Content className="bg-[#FFFEFE] dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 fixed left-1/2 top-1/2 max-h-[85vh] w-[90vw] max-w-125 -translate-x-1/2 -translate-y-1/2 rounded-md bg-gray1 p-6.25 shadow-(--shadow-6) focus:outline-none data-[state=open]:animate-contentShow">
                 <AlertDialog.Title className="m-0 text-[17px] font-medium text-mauve12">
-                    Você tem certeza que quer cancelar essa tarefa?
+                    Você tem certeza que quer remover essa tarefa?
                 </AlertDialog.Title>
                 <AlertDialog.Description className="mb-5 mt-3.75 text-[15px] leading-normal text-mauve11">
-                    Essa ação não podera ser revertida.Isso ira colocar a tarefa como cancelada e a enviar para seu histórico
+                    Essa ação não podera ser revertida.Isso ira remover a tarefa da sua lista
                 </AlertDialog.Description>
                 <div className="flex justify-end gap-6.25">
                     <AlertDialog.Cancel asChild>
@@ -33,7 +33,7 @@ const CancelDialog = ({ onConfirm }: CancelDialogProps) => (
                         <button
                             onClick={onConfirm}
                             className="inline-flex h-8.75 items-center justify-center rounded bg-red4 px-3.75 font-medium leading-none text-red11 outline-none outline-offset-1 hover:cursor-pointer hover:bg-red-500 dark:hover:bg-red-900 hover:text-neutral-50 duration-300 focus-visible:outline-2 focus-visible:outline-red7 select-none">
-                            Cancelar
+                            Remover
                         </button>
                     </AlertDialog.Action>
                 </div>
@@ -42,4 +42,4 @@ const CancelDialog = ({ onConfirm }: CancelDialogProps) => (
     </AlertDialog.Root>
 );
 
-export default CancelDialog;
+export default DeleteDialog;

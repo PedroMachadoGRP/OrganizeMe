@@ -3,7 +3,7 @@ import { TaskStatus } from "../lib/types";
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { Badge } from "@radix-ui/themes";
 import CompleteDialog from "./ui/CompleteDialog";
-import CancelDialog from "./ui/CancelDialog";
+import DeleteDialog from "./ui/DeleteDialog";
 
 type TaskCardProps = {
   title: string;
@@ -11,7 +11,7 @@ type TaskCardProps = {
   status: TaskStatus;
   expiredDate: string;
   onComplete: () => void | Promise<void>;
-  onCancel: () => void | Promise<void>;
+  onRemove: () => void | Promise<void>;
 };
 
 export default function TaskCard({
@@ -20,7 +20,7 @@ export default function TaskCard({
   status,
   expiredDate,
   onComplete,
-  onCancel,
+  onRemove,
 }: TaskCardProps) {
   const statusColors: Record<
     TaskStatus,
@@ -147,7 +147,7 @@ export default function TaskCard({
             </div>
 
             <div>
-              <CancelDialog onConfirm={onCancel} />
+              <DeleteDialog onConfirm={onRemove} />
             </div>
           </>
         )}
