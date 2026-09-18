@@ -74,6 +74,7 @@ export default function page() {
                     vertical: 'top'
                 }
             })
+            throw error
         }
     }
 

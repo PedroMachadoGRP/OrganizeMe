@@ -28,12 +28,18 @@ export function DialogModal({ onCreate }: DialogModalProps) {
         }
         setDateError(null)
 
-        await onCreate({ title, description, expireDate: parsedDate })
+        try {
+            await onCreate({ title, description, expireDate: parsedDate })
 
-        setTitle("")
-        setDescription("")
-        setExpireDate("");
-        setOpen(false)
+            setTitle("")
+            setDescription("")
+            setExpireDate("");
+            setOpen(false)
+
+        } catch{
+
+        }
+
     }
 
     return (
