@@ -10,17 +10,27 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip"
 import Link from "next/link"
-import { ChevronLeft, ChevronRight, Menu } from "lucide-react"
+import { ChevronLeft, ChevronRight, LogOut, Menu } from "lucide-react"
 import { ThemeToggle } from "../ui/ThemeToggle"
+import { useAuth } from "@/app/contexts/AuthContext"
 
 export default function SideBar() {
   const [isExpanded, setIsExpand] = useState(true)
-    const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
   const navItem = NavItems()
+  const { logout } = useAuth();
+
+  async function handleLogout() {
+    try {
+      await logout()
+    } catch {
+      window.location.href = '/login'
+    }
+  }
 
   return (
-       <>
-      {/* BOTÃO MOBILE */}
+    <>
+
       <button
         onClick={() => setIsMobileOpen(true)}
         className="
@@ -33,7 +43,7 @@ export default function SideBar() {
         <Menu size={20} />
       </button>
 
-      {/* OVERLAY MOBILE */}
+
       {isMobileOpen && (
         <div
           onClick={() => setIsMobileOpen(false)}
@@ -41,7 +51,7 @@ export default function SideBar() {
         />
       )}
 
-      {/* SIDEBAR */}
+
       <div
         className={cn(
           `
@@ -51,15 +61,14 @@ export default function SideBar() {
           bg-white dark:bg-neutral-900
           border-r border-neutral-200 dark:border-neutral-800
           `,
-          isExpanded ? "w-56" : "w-[70px]",
+          isExpanded ? "w-56" : "w-17.5",
 
-          // MOBILE comportamento
+
           isMobileOpen ? "left-0" : "-left-full md:left-0"
         )}
       >
         <aside className="flex h-full flex-col w-full px-3">
 
-          {/* TOP */}
           <div className="mt-4 pb-2">
             <div className="flex flex-col space-y-1">
               {navItem.map((item, index) =>
@@ -78,7 +87,7 @@ export default function SideBar() {
             </div>
           </div>
 
-          {/* BOTTOM */}
+
           <div className="mt-auto mb-4 space-y-2">
             {navItem.map((item, index) =>
               item.position === "bottom" ? (
@@ -95,10 +104,14 @@ export default function SideBar() {
             )}
 
             <ThemeToggle isExpanded={isExpanded} />
+
+            <button onClick={handleLogout} className="flex items-center gap-2 w-full rounded-md px-2 py-2 text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:text-neutral-400">
+              <LogOut size={18} />
+              {isExpanded && <span>Sair</span>}
+            </button>
           </div>
         </aside>
 
-        {/* TOGGLE DESKTOP */}
         <button
           onClick={() => setIsExpand(!isExpanded)}
           className="
@@ -116,9 +129,7 @@ export default function SideBar() {
   )
 }
 
-/* ---------------------------------- */
-/* NAV ITEM */
-/* ---------------------------------- */
+
 
 export const SideNavItem: React.FC<{
   label: string
