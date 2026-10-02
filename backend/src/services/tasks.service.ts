@@ -22,11 +22,17 @@ export async function listByUser(userId: string, filter?: TaskStatus) {
     });
 }
 
+export async function getTaskById(userId: string, id: string) {
+    return prisma.task.findFirst({
+        where: { id, userId },
+        select: SAFE_SELECT,
+    });
+}
 export async function createTask(userId: string, data: { title: string; description?: string; expiresAt: string }) {
     return prisma.task.create({
-       data: {
-        title: data.title, description: data.description ?? '', expiresAt: new Date(data.expiresAt),userId,
-       },
+        data: {
+            title: data.title, description: data.description ?? '', expiresAt: new Date(data.expiresAt), userId,
+        },
         select: SAFE_SELECT,
     });
 }
@@ -39,9 +45,9 @@ export async function updateTask(id: string, userId: string, data: Partial<{ tit
     return prisma.task.update({
         where: { id },
         data: {
-            ...(data.title ? {title: data.title} : {}),
-            ...(data.description !== undefined ? {description: data.description} : {}),
-            ...(data.expiresAt ? {expiresAt: new Date(data.expiresAt)} : {}),
+            ...(data.title ? { title: data.title } : {}),
+            ...(data.description !== undefined ? { description: data.description } : {}),
+            ...(data.expiresAt ? { expiresAt: new Date(data.expiresAt) } : {}),
         },
         select: SAFE_SELECT,
     })
