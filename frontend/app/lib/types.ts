@@ -1,13 +1,15 @@
 export type TaskStatus = 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'EXPIRED';
+
 export type UpdateUserInput = Partial<Pick<User, "name" | "email">>;
 
 export interface Task {
-  id: string;
-  title: string;
-  description: string;
-  expiresAt: string;
-  status: TaskStatus;
-  createdAt: string;
+    id: string;
+    title: string;
+    description: string;
+    expiresAt: string;
+    status: TaskStatus;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface User {

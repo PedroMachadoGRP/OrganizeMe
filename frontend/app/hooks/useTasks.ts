@@ -2,18 +2,11 @@
 
 import { api } from '@/app/lib/api-client'
 import { useCallback, useEffect, useState } from 'react';
+import { Task, TaskStatus } from '../lib/types';
 
-export type TaskStatus = 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'EXPIRED';
 
-export interface Task {
-    id: string;
-    title: string;
-    description: string;
-    expiresAt: string;
-    status: TaskStatus;
-    createdAt: string;
-    updatedAt: string;
-}
+
+
 
 type Filter = TaskStatus | 'ALL';
 

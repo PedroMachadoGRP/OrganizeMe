@@ -4,10 +4,10 @@ import React, { useEffect, useMemo, useState } from 'react'
 import TaskCard from '../../components/TaskCard'
 import CreateTaskModal from "../../components/CreateTaskModal"
 import { DialogModal } from '../../components/ui/dialogModal'
-import { User } from '../../lib/types'
+import { TaskStatus, User } from '../../lib/types'
 import { useSnackbar } from 'notistack'
 import { useAuth } from '../../contexts/AuthContext'
-import { TaskStatus, useTasks } from '../../hooks/useTasks'
+import {useTasks } from '../../hooks/useTasks'
 import SummaryCardsGroup from '../../components/SummaryCardsGroup'
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight } from 'lucide-react'

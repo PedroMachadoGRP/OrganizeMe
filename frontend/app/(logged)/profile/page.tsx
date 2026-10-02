@@ -19,7 +19,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      // router.replace('/login')
+      router.replace('/login')
     }
   }, [authLoading, user, router]);
 
