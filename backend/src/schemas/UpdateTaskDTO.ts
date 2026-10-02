@@ -5,7 +5,7 @@ export const updateSchema = z.object({
     body: z.object({
         title: z.string().min(1).max(50).trim(),
         description: z.string().max(5000).trim().optional(),
-        expiresAt: z.string().datetime().optional(),
+        expiresAt: z.iso.datetime().optional(),
     }).refine(
         (data) => !data.expiresAt || new Date(data.expiresAt).getTime() > Date.now(),
         {

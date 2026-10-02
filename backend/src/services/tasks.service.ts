@@ -60,7 +60,8 @@ export async function completeTask(id: string, userId: string) {
 
     return prisma.task.update({
         where: { id },
-        data: { status: 'COMPLETED' }
+        data: { status: 'COMPLETED' },
+        select: SAFE_SELECT,
     })
 }
 
