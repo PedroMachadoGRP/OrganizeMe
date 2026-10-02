@@ -10,17 +10,39 @@ import { useAuth } from '../../contexts/AuthContext'
 import { TaskStatus, useTasks } from '../../hooks/useTasks'
 import SummaryCardsGroup from '../../components/SummaryCardsGroup'
 import { useRouter } from 'next/navigation';
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export type FilterOption = TaskStatus | "ALL"
 
+const PAGE_SIZE = 6
 
 export default function page() {
-    const [filter, setFilter] = useState<FilterOption>("ALL")
     const [search, setSearch] = useState("");
+    const [page, setPage] = useState<number>(1)
     const { enqueueSnackbar } = useSnackbar();
     const { state: { user, loading: authLoading } } = useAuth();
     const router = useRouter()
-    const { tasks, loading, error, create, complete, remove, refresh } = useTasks(filter)
+    const { tasks, loading, error, create, complete, remove, refresh } = useTasks('ALL')
+
+    const sortedTasks = useMemo(() => {
+        const inProgressTasks = tasks.filter((task) => task.status === "IN_PROGRESS")
+
+        const term = search.trim().toLowerCase();
+
+        const filtered = term ? inProgressTasks.filter(
+            (task) => task.title.toLowerCase().includes(term) || task.description.toLowerCase().includes(term)
+        ) : inProgressTasks
+
+        return [...filtered].sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
+    }, [tasks, search])
+
+    const totalPages = Math.max(1, Math.ceil(sortedTasks.length / PAGE_SIZE))
+
+    useEffect(() => {
+        setPage((current) => Math.min(current, totalPages))
+    }, [totalPages])
 
     useEffect(() => {
         if (!authLoading && !user) {
@@ -29,27 +51,9 @@ export default function page() {
     }, [authLoading, user, router])
 
     const visibleTasks = useMemo(() => {
-        const inProgressTasks = tasks.filter(
-            (task) => task.status === "IN_PROGRESS"
-        )
-
-        const term = search.trim().toLowerCase()
-
-        const filtered = term
-            ? inProgressTasks.filter(
-                (task) =>
-                    task.title.toLowerCase().includes(term) ||
-                    task.description.toLowerCase().includes(term)
-            )
-            : inProgressTasks
-
-        return [...filtered]
-            .sort(
-                (a, b) =>
-                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-            )
-            .slice(0, 6)
-    }, [tasks, search])
+        const start = (page - 1) * PAGE_SIZE
+        return sortedTasks.slice(start, start + PAGE_SIZE)
+    }, [sortedTasks, page])
 
     async function handleCreateTask(data: { title: string, description: string, expireDate: Date | null }) {
         try {
@@ -145,30 +149,27 @@ export default function page() {
 
                     </div>
 
-
                     <div className="
-                        flex
-                        mt-10
-                        gap-5
-                        justify-start
-                        items-start
-                    ">
-
+    flex
+    mt-10
+    gap-5
+    justify-start
+    items-center
+">
                         <input
                             className="
-                                px-3
-                                w-100
-                                h-10
-                                border
-                                bg-white dark:bg-neutral-800
-                                text-neutral-800 dark:text-neutral-200
-                                border-black dark:border-neutral-600
-                                rounded-md
-                                outline-none
-
-                                placeholder:text-neutral-500
-                                dark:placeholder:text-neutral-400
-                            "
+            px-3
+            w-100
+            h-10
+            border
+            bg-white dark:bg-neutral-800
+            text-neutral-800 dark:text-neutral-200
+            border-black dark:border-neutral-600
+            rounded-md
+            outline-none
+            placeholder:text-neutral-500
+            dark:placeholder:text-neutral-400
+        "
                             type="text"
                             placeholder="Digite sua tarefa"
                             value={search}
@@ -176,15 +177,54 @@ export default function page() {
                         />
 
                         <div className="
-                            w-40
-                            h-10
-                            border-black dark:border-neutral-600
-                            rounded-md
-                            hover:cursor-pointer
-                        ">
+        w-40
+        h-10
+        rounded-md
+        hover:cursor-pointer
+    ">
                             <DialogModal onCreate={handleCreateTask} />
                         </div>
 
+                        {totalPages > 1 && (
+                            <div className="
+                            ml-auto
+            flex flex-row items-center justify-center
+            gap-5
+            text-neutral-700 dark:text-neutral-200
+        ">
+                                <button
+                                    onClick={() =>
+                                        setPage((current) => Math.max(1, current - 1))
+                                    }
+                                    disabled={page <= 1}
+                                    className="
+                    hover:cursor-pointer
+                    disabled:cursor-not-allowed
+                    disabled:opacity-30
+                "
+                                    aria-label="Página anterior"
+                                >
+                                    <ChevronLeft />
+                                </button>
+
+                                <span>Página {page} de {totalPages}</span>
+
+                                <button
+                                    onClick={() =>
+                                        setPage((current) => Math.min(totalPages, current + 1))
+                                    }
+                                    disabled={page >= totalPages}
+                                    className="
+                    hover:cursor-pointer
+                    disabled:cursor-not-allowed
+                    disabled:opacity-30
+                "
+                                    aria-label="Próxima página"
+                                >
+                                    <ChevronRight />
+                                </button>
+                            </div>
+                        )}
                     </div>
 
 
@@ -195,20 +235,20 @@ export default function page() {
     mt-10
 ">
 
-    {visibleTasks.length > 0 ? (
-        visibleTasks.map((task) => (
-            <TaskCard
-                key={task.id}
-                title={task.title}
-                description={task.description}
-                status={task.status}
-                expiredDate={new Date(task.expiresAt).toLocaleDateString('pt-BR')}
-                onComplete={() => complete(task.id)}
-                onRemove={() => remove(task.id)}
-            />
-        ))
-    ) : (
-        <div className="
+                        {visibleTasks.length > 0 ? (
+                            visibleTasks.map((task) => (
+                                <TaskCard
+                                    key={task.id}
+                                    title={task.title}
+                                    description={task.description}
+                                    status={task.status}
+                                    expiredDate={new Date(task.expiresAt).toLocaleDateString('pt-BR')}
+                                    onComplete={() => complete(task.id)}
+                                    onRemove={() => remove(task.id)}
+                                />
+                            ))
+                        ) : (
+                            <div className="
             col-span-3
             flex
             justify-center
@@ -223,11 +263,12 @@ export default function page() {
             text-zinc-500
             dark:text-zinc-400
         ">
-            Nenhuma tarefa registrada no momento
-        </div>
-    )}
+                                Nenhuma tarefa registrada no momento
+                            </div>
+                        )}
 
-</div>
+                    </div>
+
 
                 </section>
 
