@@ -1,10 +1,10 @@
 import { Response } from "express";
 import { AuthRequest } from "../middleware/authenticate";
 import { TaskStatus } from "@prisma/client";
-import { completeTask, createTask, deleteTask, listByUser, updateTask } from "@/services/tasks.service";
+import { completeTask, createTask, deleteTask, getTaskById, listByUser, updateTask } from "@/services/tasks.service";
 
 type TaskParams = {
-  id: string;
+    id: string;
 };
 
 export async function list(req: AuthRequest<TaskParams>, res: Response) {
@@ -18,6 +18,17 @@ export async function list(req: AuthRequest<TaskParams>, res: Response) {
     );
 
     return res.json({ tasks })
+}
+
+export async function getById(req: AuthRequest<TaskParams>, res: Response) {
+    const { id } = req.params;
+    const task = await getTaskById(req.user!.id, id);
+
+    if (!task) {
+        return res.status(404).json({ message: "Tarefa não encontrada" });
+    }
+
+    res.json({ task });
 }
 
 export async function create(req: AuthRequest<TaskParams>, res: Response) {
