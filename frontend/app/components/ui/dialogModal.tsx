@@ -77,7 +77,7 @@ export function DialogModal({ onCreate }: DialogModalProps) {
 
                         <div>
                             <label className="text-sm md:text-base">
-                                Decrição da atividade
+                                Descrição da atividade
                             </label>
 
                             <input

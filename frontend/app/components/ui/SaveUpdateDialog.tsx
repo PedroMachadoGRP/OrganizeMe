@@ -51,7 +51,7 @@ const SaveUpdateDialog = ({ fieldLabel, onConfirm, value, disable, onCancel }: S
                         Você tem certeza que quer atualizar {fieldLabel.toLowerCase()}?
                     </AlertDialog.Title>
                     <AlertDialog.Description className="mb-5 mt-3.75 text-[15px] leading-normal text-mauve11">
-                        Essa ação não podera ser revertida.Isso ira atualizar a informação de perfil permanentemente
+                        Essa ação não poderá ser revertida.Isso ira atualizar a informação de perfil permanentemente
 
                         {value && (
                             <>

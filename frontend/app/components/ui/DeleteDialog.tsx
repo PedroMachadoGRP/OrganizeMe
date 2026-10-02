@@ -21,7 +21,7 @@ const DeleteDialog = ({ onConfirm }: DeleteDialogProps) => (
                     Você tem certeza que quer remover essa tarefa?
                 </AlertDialog.Title>
                 <AlertDialog.Description className="mb-5 mt-3.75 text-[15px] leading-normal text-mauve11">
-                    Essa ação não podera ser revertida.Isso ira remover a tarefa da sua lista
+                    Essa ação não poderá ser revertida.Isso ira remover a tarefa da sua lista
                 </AlertDialog.Description>
                 <div className="flex justify-end gap-6.25">
                     <AlertDialog.Cancel asChild>

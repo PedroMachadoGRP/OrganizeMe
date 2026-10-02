@@ -20,7 +20,7 @@ const CompleteDialog = ({ onConfirm }: CompleteDialogProps) => (
                     Você tem certeza que cumpriu todos os requisitos da tarefa?
                 </AlertDialog.Title>
                 <AlertDialog.Description className="mb-5 mt-3.75 text-[15px] leading-normal text-mauve11">
-                    Essa ação não podera ser revertida.Isso ira colocar a tarefa como completa e a enviar para seu histórico
+                    Essa ação não poderá ser revertida.Isso ira colocar a tarefa como completa e a enviar para seu histórico
                 </AlertDialog.Description>
                 <div className="flex justify-end gap-6.25">
                     <AlertDialog.Cancel asChild>

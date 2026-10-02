@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { Dialog } from "radix-ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { EllipsisVertical } from "lucide-react";
-import { Task } from "../../hooks/useTasks";
+import { Task } from "@/app/lib/types";
+
 
 type UpdateTaskDialogProps = {
   task: Task;
@@ -88,7 +89,7 @@ export default function UpdateTaskDialog({ task, onUpdate }: UpdateTaskDialogPro
 
             <div>
               <label className="text-sm md:text-base">
-                Decrição da atividade
+                Descrição da atividade
               </label>
 
               <textarea
