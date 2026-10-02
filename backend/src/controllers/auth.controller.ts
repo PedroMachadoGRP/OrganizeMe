@@ -108,7 +108,7 @@ export async function updatePassword(req: AuthRequest, res: Response) {
         return res.json({ message: "Senha atualizda com sucesso" })
     } catch (err: any) {
         if (err.message === "INVALID_CURRENT_PASSWORD") {
-            return res.status(401).json({ message: "Senha atual incorreta" })
+            return res.status(400).json({ message: "Senha atual incorreta" })
         }
 
         throw err
