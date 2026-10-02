@@ -14,7 +14,7 @@ export default function Page() {
     const [password, setPassword] = useState<string>("");
 
     const registerUser = async () => {
-        try { 
+        try {
             await register(name, email, password)
             router.push('/tasks')
 
@@ -27,15 +27,11 @@ export default function Page() {
             });
 
         } catch (error: any) {
-            if (error.errors?.length) {
-                enqueueSnackbar(error.errors[0].message, {
-                    variant: "error",
-                    anchorOrigin: {
-                        horizontal: 'right',
-                        vertical: 'top'
-                    }
-                })
-            }
+            const msg = error.errors?.[0]?.message ?? error.message ?? "Algo deu errado";
+            enqueueSnackbar(msg, {
+                variant: "error",
+                anchorOrigin: { horizontal: 'right', vertical: 'top' }
+            });
         }
     }
 
@@ -48,8 +44,8 @@ export default function Page() {
 
                 <div className='flex flex-col p-5 gap-2'>
                     <input type='text' value={name} onChange={(e) => setName(e.target.value)} className='h-10 w-80 p-2 rounded-[10] tracking-wide outline-none focus:outline-none border bg-[#17191e] text-zinc-100 border-gray-500' name="" id="" placeholder='Nome' />
-                    <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} className='h-10 w-80 p-2 rounded-[10] tracking-wide outline-none focus:outline-none border bg-[#17191e] text-zinc-100 border-gray-500'  name="" id="" placeholder='Email' />
-                    <input type='password' value={password} onChange={(e) => setPassword(e.target.value)} className='h-10 w-80 p-2 rounded-[10] tracking-wide outline-none focus:outline-none border bg-[#17191e] text-zinc-100 border-gray-500'  name="" id="" placeholder='Password' />
+                    <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} className='h-10 w-80 p-2 rounded-[10] tracking-wide outline-none focus:outline-none border bg-[#17191e] text-zinc-100 border-gray-500' name="" id="" placeholder='Email' />
+                    <input type='password' value={password} onChange={(e) => setPassword(e.target.value)} className='h-10 w-80 p-2 rounded-[10] tracking-wide outline-none focus:outline-none border bg-[#17191e] text-zinc-100 border-gray-500' name="" id="" placeholder='Password' />
                 </div>
 
                 <button onClick={registerUser} className='border border-[#101118] h-10 w-80 rounded-[10] hover:bg-black transition duration-200 hover:cursor-pointer'>Entar</button>
