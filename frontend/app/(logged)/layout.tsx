@@ -6,9 +6,9 @@ export default async function TasksLayout({ children, }: { children: React.React
     const cookieStore = await cookies();
     const token = cookieStore.get('accessToken');
 
-    // if (!token) {
-    //     redirect('/login');
-    // }
+    if (!token) {
+        redirect('/login');
+    }
 
     return (
 
