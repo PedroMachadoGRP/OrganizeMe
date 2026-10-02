@@ -23,7 +23,7 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
             return res.status(401).json({ message: 'token revogado' })
         }
 
-        const publicKey = await importSPKI(process.env.JWT_PUBLIC_KEY!.replace(/\n/g, '\n'), 'RS256');
+        const publicKey = await importSPKI(process.env.JWT_PUBLIC_KEY!.replace(/\\n/g, '\n'), 'RS256');
 
         const { payload } = await jwtVerify(token, publicKey);
 
