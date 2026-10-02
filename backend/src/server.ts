@@ -20,18 +20,6 @@ async function main() {
   // 3. Iniciar o job de expiração de tarefas
   startExpiryJob();
 
-  app.get("/redis-test", async (req, res) => {
-  try {
-    await redis.set("teste", "123");
-    const valor = await redis.get("teste");
-
-    res.json({ ok: true, valor });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json(err);
-  }
-});
-
   // 4. Graceful shutdown — fecha conexões antes de encerrar
   const shutdown = async (signal: string) => {
     console.log(`${signal} recebido — encerrando...`);

@@ -105,7 +105,7 @@ export async function updateMe(req: AuthRequest, res: Response) {
 export async function updatePassword(req: AuthRequest, res: Response) {
     try {
         await updateUserPassword(req.user!.id, req.body.currentPassword, req.body.newPassword);
-        return res.json({ message: "Senha atualizda com sucesso" })
+        return res.json({ message: "Senha atualizada com sucesso" })
     } catch (err: any) {
         if (err.message === "INVALID_CURRENT_PASSWORD") {
             return res.status(400).json({ message: "Senha atual incorreta" })
